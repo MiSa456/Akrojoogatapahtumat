@@ -19,7 +19,13 @@ if ($request === '/' || $request === '/workshopit') {
   $workshopit = haeTapahtumat();
   echo $templates->render('workshopit',['workshopit' => $workshopit]);
 } else if ($request === '/tapahtuma') {
-  echo $templates->render('tapahtuma');
+  require_once MODEL_DIR . 'tapahtuma.php';
+  $tapahtuma = haeTapahtuma($_GET['id']);
+  if ($tapahtuma) {
+    echo $templates->render('tapahtuma',['tapahtuma' => $tapahtuma]);
+  } else {
+    echo $templates->render('tapahtumanotfound');
+  }
 } else {
   echo $templates->render('notfound');
 }
