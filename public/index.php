@@ -15,7 +15,9 @@ $templates = new League\Plates\Engine(TEMPLATE_DIR);
 // Selvitetään mitä sivua on kutsuttu ja suoritetaan sivua vastaava
 // käsittelijä.
 if ($request === '/' || $request === '/workshopit') {
-  echo $templates->render('workshopit');
+  require_once MODEL_DIR . 'workshopit.php';
+  $workshopit = haeTapahtumat();
+  echo $templates->render('workshopit',['workshopit' => $workshopit]);
 } else if ($request === '/tapahtuma') {
   echo $templates->render('tapahtuma');
 } else {
