@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="fi">
-  <head>
+<head>
+    <link href="styles/styles.css" rel="stylesheet">
     <title>acroyogaworkshops - <?=$this->e($title)?></title>
     <meta charset="UTF-8">    
-  </head>
-  <body>
-  <header>
-      <h1><a href="<?=BASEURL?>">Ikaalisten akrojoogit</a></h1>
+</head>
+<body>
+    <header>
+        <h1><a href="<?=BASEURL?>">Akrojooga Ikaalinen</a></h1>
     </header>
     <section>
-      <?=$this->section('content')?>
+        <?=$this->section('content')?>
     </section>
     <footer>
-      <hr>
-      <div>Suomen akrojoogit</div>
+        <hr>
+        <div>Ikaalisten akrojoogit</div>
     </footer>
-  </body>
+</body>
 </html>
