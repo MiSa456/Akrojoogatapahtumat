@@ -109,7 +109,7 @@ form > div {
     font-size: 1rem;
   }
   
-  input[type=submit] {
+  input[type=submit], .button {
     padding: 0.5rem 3rem;
     border-radius: 0.3rem;
     background-color: #22c1c3;
@@ -137,3 +137,15 @@ form > div {
 .info a {
   color: #22c1c3;
 }
+
+.flexarea {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .button {
+    text-decoration: none;
+  }
+  
