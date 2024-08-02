@@ -1,19 +1,11 @@
 <?php
-function lisaaTili($formdata) {
+function lisaaTili($formdata, $baseurl='') {
 
-  // Tuodaan henkilo-mallin funktiot, joilla voidaan lisätä
-  // henkilön tiedot tietokantaan.
+  // Tuodaan henkilo-mallin funktiot, joilla voidaan lisätä henkilön tiedot tietokantaan.
   require_once(MODEL_DIR . 'henkilo.php');
 
-  // Alustetaan virhetaulukko, joka palautetaan lopuksi joko
-  // tyhjänä tai virheillä täytettynä.
+  // Alustetaan virhetaulukko, joka palautetaan lopuksi joko tyhjänä tai virheillä täytettynä.
   $error = [];
-
-  // Seuraavaksi tehdään lomaketietojen tarkistus. Tarkistusten
-  // periaate on jokaisessa kohdassa sama. Jos kentän arvo
-  // ei täytä tarkistuksen ehtoja, niin error-taulukkoon
-  // lisätään virhekuvaus. Lopussa error-taulukko on tyhjä, jos
-  // kaikki kentät menivät tarkistuksesta lävitse.
 
   // Tarkistetaan onko nimi määritelty ja se täyttää mallin.
   if (!isset($formdata['nimi']) || !$formdata['nimi']) {
@@ -24,8 +16,7 @@ function lisaaTili($formdata) {
     }
   }
 
-  // Tarkistetaan, että sähköpostiosoite on määritelty ja se on
-  // oikeassa muodossa.
+  // Tarkistetaan, että sähköpostiosoite on määritelty ja se on oikeassa muodossa.
   if (!isset($formdata['email']) || !$formdata['email']) {
     $error['email'] = "Anna sähköpostiosoitteesi.";
   } else {
@@ -38,8 +29,7 @@ function lisaaTili($formdata) {
     }
   }
 
-  // Tarkistetaan, että kummatkin salasanat on annettu ja että
-  // ne ovat keskenään samat.
+  // Tarkistetaan, että kummatkin salasanat on annettu ja että ne ovat keskenään samat.
   if (isset($formdata['salasana1']) && $formdata['salasana1'] &&
       isset($formdata['salasana2']) && $formdata['salasana2']) {
     if ($formdata['salasana1'] != $formdata['salasana2']) {
@@ -49,61 +39,58 @@ function lisaaTili($formdata) {
     $error['salasana'] = "Syötä salasanasi kahteen kertaan.";
   }
 
-  // Lisätään tiedot tietokantaan, jos edellä syötettyissä
-  // tiedoissa ei ollut virheitä eli error-taulukosta ei
-  // löydy virhetekstejä.
+  // Lisätään tiedot tietokantaan, jos edellä syötetyissä tiedoissa ei ollut virheitä.
   if (!$error) {
-
-    // Haetaan lomakkeen tiedot omiin muuttujiinsa.
-    // Salataan salasana myös samalla.
     $nimi = $formdata['nimi'];
     $email = $formdata['email'];
     $salasana = password_hash($formdata['salasana1'], PASSWORD_DEFAULT);
 
-    // Lisätään henkilö tietokantaan. Jos lisäys onnistui,
-    // tulee palautusarvona lisätyn henkilön id-tunniste.
-    $idhenkilo = lisaaHenkilo($nimi,$email,$salasana);
+    $idhenkilo = lisaaHenkilo($nimi, $email, $salasana);
 
-    // Palautetaan JSON-tyyppinen taulukko, jossa:
-    //  status   = Koodi, joka kertoo lisäyksen onnistumisen.
-    //             Hyvin samankaltainen kuin HTTP-protokollan
-    //             vastauskoodi.
-    //             200 = OK
-    //             400 = Bad Request
-    //             500 = Internal Server Error
-    //  id       = Lisätyn rivin id-tunniste.
-    //  formdata = Lisättävän henkilön lomakedata. Sama, mitä
-    //             annettiin syötteenä.
-    //  error    = Taulukko, jossa on lomaketarkistuksessa
-    //             esille tulleet virheet.
-
-    // Tarkistetaan onnistuiko henkilön tietojen lisääminen.
-    // Jos idhenkilo-muuttujassa on positiivinen arvo,
-    // onnistui rivin lisääminen. Muuten liäämisessä ilmeni
-    // ongelma.
     if ($idhenkilo) {
-      return [
-        "status" => 200,
-        "id"     => $idhenkilo,
-        "data"   => $formdata
-      ];
+      require_once(HELPERS_DIR . "secret.php");
+      $avain = generateActivationCode($email);
+      $url = 'https://' . $_SERVER['HTTP_HOST'] . $baseurl . "/vahvista?key=$avain";
+
+      if (paivitaVahvavain($email, $avain) && lahetaVahvavain($email, $url)) {
+        return [
+          "status" => 200,
+          "id"     => $idhenkilo,
+          "data"   => $formdata
+        ];
+      } else {
+        return [
+          "status" => 500,
+          "data"   => $formdata
+        ];
+      }
     } else {
       return [
         "status" => 500,
         "data"   => $formdata
       ];
     }
-
   } else {
-
-    // Lomaketietojen tarkistuksessa ilmeni virheitä.
     return [
       "status" => 400,
       "data"   => $formdata,
       "error"  => $error
     ];
-
   }
 }
 
+function lahetaVahvavain($email, $url) {
+  $message = "Hei!\n\n" .
+             "Olet luonut tilin Akrojooga Ikaalinen -sivustolle tällä\n" .
+             "sähköpostiosoitteella. Klikkaamalla alla olevaa\n" .
+             "linkkiä vahvistat käyttämäsi sähköpostiosoitteen\n" .
+             "ja pääset ilmoittautumaan tapahtumiin.\n\n" .
+             "$url\n\n" .
+             "Jos et ole luonut tiliä, niin\n" .
+             "silloin tämä sähköposti on tullut sinulle\n" .
+             "vahingossa. Siinä tapauksessa ole hyvä ja\n" .
+             "poista tämä viesti.\n\n" .
+             "Terveisin, Ikaalisten akrojoogit";
+  return mail($email, 'Akrojooga Ikaalinen, tilin aktivointilinkki', $message);
+}
 ?>
