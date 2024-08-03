@@ -1,6 +1,6 @@
 <?php $this->layout('template', ['title' => 'Tulevat workshopit']) ?>
 
-<h1>Tulevat Workshopit</h1>
+<h1>Tulevat kurssit ja workshopit</h1>
 
 <div class='workshopit'>
 <?php

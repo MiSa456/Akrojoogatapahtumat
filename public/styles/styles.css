@@ -1,3 +1,4 @@
+/* Yleiset tyylit */
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&display=swap');
 
 * {
@@ -23,19 +24,30 @@ body {
 }
 
 header {
-  background-color: #22c1c3;
-  padding: 1rem 1.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  font-size: 0.8rem;
+    background-color: #22c1c3;
+    padding: 1rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
 }
 
-header h1 {
+.header-content {
+    display: flex;
+    align-items: center;
+}
+
+.header-content h1 {
     font-size: 2.5rem;
     font-weight: bold;
     color: #fff;
+    margin-right: 1rem;
+}
+
+.header-content .logo {
+    width: 70px;
+    height: auto;
 }
 
 header a {
@@ -100,16 +112,16 @@ form > div {
     display: flex;
     flex-direction: column;
     margin-top: 0.5rem;
-  }
-  
-  input {
+}
+
+input {
     border: 1px solid #999;
     border-radius: 0.3rem;
     padding: 0.45rem;
     font-size: 1rem;
-  }
-  
-  input[type=submit], .button {
+}
+
+input[type=submit], .button {
     padding: 0.5rem 3rem;
     border-radius: 0.3rem;
     background-color: #22c1c3;
@@ -117,25 +129,25 @@ form > div {
     font-weight: bold;
     min-width: 12rem;
     margin: 1rem auto;
-  }
-  
-  .error {
+}
+
+.error {
     color: red;
     font-size: 0.8rem;
     font-style: bold;
-  }
-  
-  .info {
-  background-color: #e5e5e5;
-  border: 1px solid #999;
-  border-radius: 0.5rem;
-  padding: 1rem;
-  margin: 1rem;
-  text-align: center;
+}
+
+.info {
+    background-color: #e5e5e5;
+    border: 1px solid #999;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem;
+    text-align: center;
 }
 
 .info a {
-  color: #22c1c3;
+    color: #22c1c3;
 }
 
 .flexarea {
@@ -143,9 +155,53 @@ form > div {
     flex-direction: column;
     align-items: center;
     margin-top: 1rem;
-  }
-  
-  .button {
+}
+
+.button {
     text-decoration: none;
-  }
-  
+}
+
+/* Määritellään .workshopit-luokalle tyylit */
+.workshopit > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.workshopit > div:last-child {
+    border-bottom: none;
+}
+
+/* Korostetaan linkkiä */
+.workshopit a {
+    color: #22c1c3;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.workshopit a:hover {
+    text-decoration: underline;
+}
+
+/* Ajankohdan erottuminen yksittäinen tapahtuma-sivulla */
+.tapahtuma-aika {
+    color: #333;
+    background-color: rgba(34, 193, 195, 0.1);
+    border-radius: 0.2rem;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.image-container {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0; /* Voit säätää marginaalia tarpeen mukaan */
+}
+
+.image {
+    width: 100%;
+    max-width: 350px;
+    height: auto; /* Säilytä kuvasuhde */
+}

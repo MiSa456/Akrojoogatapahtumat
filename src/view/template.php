@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="fi">
 <head>
-    <link href="styles/styles.css" rel="stylesheet">
+    <link href="<?=BASEURL?>/styles/styles.css" rel="stylesheet">
     <title>acroyogaworkshops - <?=$this->e($title)?></title>
     <meta charset="UTF-8">    
 </head>
 <body>
     <header>
-        <h1><a href="<?=BASEURL?>">Akrojooga Ikaalinen</a></h1>
+        <div class="header-content">
+            <h1><a href="<?=BASEURL?>">Akrojooga Ikaalinen</a></h1>
+            <img src="<?=BASEURL?>/images/Akrokuva1.png" alt="Akrojooga logo" class="logo">
+        </div>
         <div class="profile">
         <?php
           if (isset($_SESSION['user'])) {
@@ -25,6 +28,9 @@
     <section>
         <?=$this->section('content')?>
     </section>
+    <div class="image-container">
+        <img src="<?=BASEURL?>/images/Akrokuva.png" alt="Akrojooga kuva" id="image2" class="image">
+    </div>
     <footer>
         <hr>
         <div>Ikaalisten akrojoogit</div>

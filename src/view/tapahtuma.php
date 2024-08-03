@@ -6,7 +6,7 @@
 
 <h1><?=$tapahtuma['nimi']?></h1>
 <div><?=$tapahtuma['kuvaus']?></div>
-<div>Ajankohta: <?=$start->format('j.n.Y')?> klo <?=$start->format('G:i')?></div>
+<div class="tapahtuma-aika">Ajankohta: <?=$start->format('j.n.Y')?> klo <?=$start->format('G:i')?></div>
 
 <?php
   if ($loggeduser) {
