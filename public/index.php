@@ -202,11 +202,13 @@ switch ($request) {
         break;
       }
         break;
-    case (bool)preg_match('/\/admin.*/', $request):
+     case (bool)preg_match('/\/admin.*/', $request):
         if ($loggeduser["admin"]) {
-          echo "ylläpitosivut";
+            require_once MODEL_DIR . 'workshopit.php';
+            $tapahtumat = haeTapahtumatJaIlmoittautuneet();
+            echo $templates->render('admin_tapahtumat', ['tapahtumat' => $tapahtumat]);
         } else {
-          echo $templates->render('admin_ei_oikeuksia');
+            echo $templates->render('admin_ei_oikeuksia');
         }
         break;
   default:
